@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISO 15288 Chatbot</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --primary-color: #0f172a;
@@ -204,9 +205,81 @@
                 padding: 1rem;
             }
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--container-shadow);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .modal p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .continue-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            background: var(--primary-color);
+        }
     </style>
 </head>
 <body>
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal">
+            <h2>Welcome! 👋</h2>
+            <p>Dear Dr. K and graders, please give us an A! We really need it! 🙏✨</p>
+            <button class="continue-btn" onclick="closeModalWithConfetti()">Continue</button>
+        </div>
+    </div>
+
     <header class="header">
         <div class="header-content">
             <div class="header-title">
@@ -276,6 +349,48 @@
             v.type = "text/javascript";
             s.parentNode.insertBefore(v, s);
         })(document, 'script');
+    </script>
+
+    <script>
+        function closeModalWithConfetti() {
+            // Hide modal
+            document.getElementById('welcomeModal').style.display = 'none';
+            
+            // Trigger confetti
+            const duration = 3000;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = duration;
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50;
+
+                // Launch confetti from both sides
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+                });
+                confetti({
+                    ...defaults,
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+                });
+            }, 250);
+
+            // Stop after duration
+            setTimeout(() => {
+                clearInterval(interval);
+            }, duration);
+        }
     </script>
 </body>
 </html>
