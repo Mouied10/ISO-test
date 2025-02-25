@@ -272,6 +272,7 @@
 
         .grade-buttons {
             display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
             justify-content: center;
             margin-bottom: 1.5rem;
@@ -294,6 +295,15 @@
             color: white;
         }
 
+        .modal-step {
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .modal-step.active {
+            display: block;
+        }
+
         .thank-you {
             display: none;
             animation: slideIn 0.3s ease-out;
@@ -303,18 +313,23 @@
 <body>
     <div class="modal-overlay" id="welcomeModal">
         <div class="modal">
-            <h2>👋 Hey there!</h2>
-            <p>Our presentations so far deserve...</p>
-            <div class="grade-buttons">
-                <button class="grade-btn" onclick="selectGrade('A')">A 🌟</button>
-                <button class="grade-btn" onclick="selectGrade('B')">B 😊</button>
-                <button class="grade-btn" onclick="selectGrade('C')">C 😐</button>
-                <button class="grade-btn" onclick="selectGrade('D')">D 😅</button>
-                <button class="grade-btn" onclick="selectGrade('F')">F 😭</button>
+            <div id="step1" class="modal-step active">
+                <h2>👋 Hey there!</h2>
+                <p>We take your opinion very seriously.<br>What grade should we get?</p>
+                <button class="continue-btn" onclick="showStep2()">Next</button>
             </div>
-            <div id="thankYou" class="thank-you">
-                <p>Thank you for giving us an A! 😂 You're the best! 🎉</p>
-                <button class="continue-btn" onclick="closeModalWithConfetti()">Continue</button>
+            <div id="step2" class="modal-step">
+                <h2>Make your choice!</h2>
+                <div class="grade-buttons">
+                    <button class="grade-btn" onclick="selectGrade('A')">A+ 🌟</button>
+                    <button class="grade-btn" onclick="selectGrade('A')">A+ ⭐</button>
+                    <button class="grade-btn" onclick="selectGrade('A')">A+ 👑</button>
+                    <button class="grade-btn" onclick="selectGrade('A')">A+ 🏆</button>
+                    <button class="grade-btn" onclick="selectGrade('A')">A+ ✨</button>
+                </div>
+            </div>
+            <div id="thankYou" class="modal-step">
+                <p>Thanks for giving us an A+! ✨</p>
             </div>
         </div>
     </div>
@@ -391,21 +406,25 @@
     </script>
 
     <script>
-        function selectGrade(grade) {
-            // Hide grade buttons
-            document.querySelector('.grade-buttons').style.display = 'none';
-            document.querySelector('p').style.display = 'none';
-            
-            // Show thank you message
-            const thankYou = document.getElementById('thankYou');
-            thankYou.style.display = 'block';
+        function showStep2() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
         }
 
-        function closeModalWithConfetti() {
-            // Hide modal
-            document.getElementById('welcomeModal').style.display = 'none';
+        function selectGrade(grade) {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('thankYou').classList.add('active');
             
-            // Trigger confetti
+            // Trigger confetti immediately
+            startConfetti();
+            
+            // Close modal after delay
+            setTimeout(() => {
+                document.getElementById('welcomeModal').style.display = 'none';
+            }, 2000);
+        }
+
+        function startConfetti() {
             const duration = 3000;
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
