@@ -197,14 +197,28 @@
             .chat-container {
                 height: 70vh;
                 min-height: 350px;
+                order: 1;
+            }
+
+            .sample-questions {
+                order: 2;
+                margin-top: 1rem;
+                margin-bottom: 0;
             }
 
             .features-sidebar {
                 grid-template-columns: 1fr;
+                order: 3;
             }
 
             .feature-item {
                 padding: 1rem;
+            }
+
+            /* Main container's first div needs flex display for ordering */
+            .main-container > div {
+                display: flex;
+                flex-direction: column;
             }
         }
 
