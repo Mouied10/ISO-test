@@ -269,14 +269,53 @@
             transform: translateY(-2px);
             background: var(--primary-color);
         }
+
+        .grade-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .grade-btn {
+            background: white;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .grade-btn:hover {
+            transform: translateY(-2px);
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .thank-you {
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
     </style>
 </head>
 <body>
     <div class="modal-overlay" id="welcomeModal">
         <div class="modal">
-            <h2>Welcome! 👋</h2>
-            <p>Dear Dr. K and graders, please give us an A! We really need it! 🙏✨</p>
-            <button class="continue-btn" onclick="closeModalWithConfetti()">Continue</button>
+            <h2>👋 Hey there!</h2>
+            <p>Our presentations so far deserve...</p>
+            <div class="grade-buttons">
+                <button class="grade-btn" onclick="selectGrade('A')">A 🌟</button>
+                <button class="grade-btn" onclick="selectGrade('B')">B 😊</button>
+                <button class="grade-btn" onclick="selectGrade('C')">C 😐</button>
+                <button class="grade-btn" onclick="selectGrade('D')">D 😅</button>
+                <button class="grade-btn" onclick="selectGrade('F')">F 😭</button>
+            </div>
+            <div id="thankYou" class="thank-you">
+                <p>Thank you for giving us an A! 😂 You're the best! 🎉</p>
+                <button class="continue-btn" onclick="closeModalWithConfetti()">Continue</button>
+            </div>
         </div>
     </div>
 
@@ -352,6 +391,16 @@
     </script>
 
     <script>
+        function selectGrade(grade) {
+            // Hide grade buttons
+            document.querySelector('.grade-buttons').style.display = 'none';
+            document.querySelector('p').style.display = 'none';
+            
+            // Show thank you message
+            const thankYou = document.getElementById('thankYou');
+            thankYou.style.display = 'block';
+        }
+
         function closeModalWithConfetti() {
             // Hide modal
             document.getElementById('welcomeModal').style.display = 'none';
