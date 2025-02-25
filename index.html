@@ -20,22 +20,28 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            min-height: 100vh;
-            display: grid;
-            grid-template-rows: auto 1fr;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
 
         .header {
             background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-            padding: 1.5rem;
+            padding: 1rem;
             color: white;
-            position: relative;
-            z-index: 10;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
@@ -44,6 +50,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 1rem;
         }
 
         .header-title {
@@ -51,25 +58,26 @@
         }
 
         .header h1 {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
         }
 
         .header p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             opacity: 0.9;
         }
 
         .main-container {
+            flex: 1;
             display: grid;
             grid-template-columns: 1fr 300px;
             gap: 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1.5rem;
-            height: calc(100vh - 100px);
+            padding: 1rem;
             width: 100%;
+            height: calc(100vh - 84px); /* Adjusted for header height */
         }
 
         .chat-container {
@@ -79,6 +87,7 @@
             overflow: hidden;
             position: relative;
             height: 100%;
+            min-height: 500px;
         }
 
         #voiceflow-chat {
@@ -99,6 +108,7 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            height: fit-content;
         }
 
         .feature-item {
@@ -144,10 +154,12 @@
             .main-container {
                 grid-template-columns: 1fr;
                 height: auto;
+                gap: 1rem;
             }
 
             .chat-container {
-                height: calc(100vh - 250px);
+                height: 60vh;
+                min-height: 400px;
             }
 
             .features-sidebar {
@@ -157,21 +169,39 @@
         }
 
         @media (max-width: 640px) {
+            .header {
+                padding: 0.75rem;
+            }
+
             .header-content {
                 flex-direction: column;
                 text-align: center;
+                padding: 0 0.5rem;
             }
 
             .header h1 {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
+            }
+
+            .header p {
+                font-size: 0.85rem;
+            }
+
+            .main-container {
+                padding: 0.75rem;
             }
 
             .chat-container {
-                height: calc(100vh - 300px);
+                height: 70vh;
+                min-height: 350px;
             }
 
             .features-sidebar {
                 grid-template-columns: 1fr;
+            }
+
+            .feature-item {
+                padding: 1rem;
             }
         }
     </style>
