@@ -89,12 +89,14 @@
             position: relative;
             height: 100%;
             min-height: 500px;
+            scroll-margin-top: 100px;
         }
 
         #voiceflow-chat {
             width: 100%;
             height: 100%;
             border: none;
+            scroll-behavior: auto;
         }
 
         /* Custom Voiceflow Chat Styles */
@@ -141,13 +143,13 @@
         }
 
         .feature-icon {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             background: var(--accent-color);
-            border-radius: 6px;
+            border-radius: 4px;
             color: white;
         }
 
@@ -308,6 +310,42 @@
             display: none;
             animation: slideIn 0.3s ease-out;
         }
+
+        .sample-questions {
+            background: white;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--container-shadow);
+            margin-bottom: 0.75rem;
+        }
+
+        .sample-questions h3 {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .questions-list {
+            display: grid;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--text-color);
+        }
+
+        .question-item {
+            padding: 0.3rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .question-item:hover {
+            background-color: var(--background-color);
+            color: var(--accent-color);
+        }
     </style>
 </head>
 <body>
@@ -344,8 +382,25 @@
     </header>
 
     <main class="main-container">
-        <div class="chat-container">
-            <div id="voiceflow-chat"></div>
+        <div>
+            <div class="sample-questions">
+                <h3>
+                    <span class="feature-icon">❓</span>
+                    Sample Questions You Can Ask
+                </h3>
+                <div class="questions-list">
+                    <div class="question-item">Q: What are the key lifecycle stages in ISO 15288?</div>
+                    <div class="question-item">Q: How does ISO 15288 define system verification and validation?</div>
+                    <div class="question-item">Q: What documentation is required for compliance with ISO 15288?</div>
+                    <div class="question-item">Q: What happens during the system retirement phase?</div>
+                    <div class="question-item">Q: How do I ensure my system meets validation requirements?</div>
+                    <div class="question-item">Q: What is the difference between verification and validation in ISO 15288?</div>
+                    <div class="question-item">Q: What are the key deliverables in an ISO 15288-compliant project?</div>
+                </div>
+            </div>
+            <div class="chat-container">
+                <div id="voiceflow-chat"></div>
+            </div>
         </div>
         
         <aside class="features-sidebar">
@@ -391,6 +446,11 @@
                         stylesheet: "data:text/css;base64,LnZmcmMtY2hhdC1jb250YWluZXIgeyBib3JkZXItcmFkaXVzOiAwICFpbXBvcnRhbnQ7IH0gLnZmcmMtc3lzdGVtLXJlc3BvbnNlIC52ZnJjLW1lc3NhZ2UgeyBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1hY2NlbnQtY29sb3IpOyBjb2xvcjogd2hpdGU7IGJvcmRlci1yYWRpdXM6IDEycHg7IH0gLnZmcmMtdXNlci1yZXNwb25zZSAudmZyYy1tZXNzYWdlIHsgYmFja2dyb3VuZC1jb2xvcjogI2YxZjVmOTsgY29sb3I6ICMwZjE3MmE7IGJvcmRlci1yYWRpdXM6IDEycHg7IH0="
                     }
                 }).then(() => {
+                    // Prevent auto-scrolling
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                    }, 100);
+                    
                     // Add a welcome message
                     window.voiceflow.chat.proactive.clear();
                     window.voiceflow.chat.proactive.push({ 
@@ -418,14 +478,14 @@
             // Trigger confetti immediately
             startConfetti();
             
-            // Close modal after delay
+            // Close modal after shorter delay (1 second instead of 2)
             setTimeout(() => {
                 document.getElementById('welcomeModal').style.display = 'none';
-            }, 2000);
+            }, 1000);
         }
 
         function startConfetti() {
-            const duration = 3000;
+            const duration = 1500; // Reduced from 3000 to 1500ms
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
             function randomInRange(min, max) {
