@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISO 15288 Chatbot</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #3b82f6;
+            --background-color: #f1f5f9;
+            --text-color: #334155;
+            --border-radius: 16px;
+            --container-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            height: calc(100vh - 100px);
+            width: 100%;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--container-shadow);
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        #voiceflow-chat {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Custom Voiceflow Chat Styles */
+        :root {
+            --vfrc-primary-color: var(--accent-color);
+            --vfrc-message-background: var(--accent-color);
+            --vfrc-message-color: white;
+            --vfrc-border-radius: 12px;
+        }
+
+        .features-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 1.25rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--container-shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .feature-item h3 {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-item p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-color);
+            border-radius: 6px;
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .chat-container {
+                height: calc(100vh - 250px);
+            }
+
+            .features-sidebar {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .chat-container {
+                height: calc(100vh - 300px);
+            }
+
+            .features-sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>ISO 15288 AI Assistant</h1>
+                <p>Your expert guide to system lifecycle processes</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="chat-container">
+            <div id="voiceflow-chat"></div>
+        </div>
+        
+        <aside class="features-sidebar">
+            <div class="feature-item">
+                <h3>
+                    <span class="feature-icon">💡</span>
+                    Expert Knowledge
+                </h3>
+                <p>Get detailed insights and explanations about ISO 15288 standards and system lifecycle processes</p>
+            </div>
+            <div class="feature-item">
+                <h3>
+                    <span class="feature-icon">⚡</span>
+                    Instant Answers
+                </h3>
+                <p>Access immediate responses to your questions about system engineering processes</p>
+            </div>
+            <div class="feature-item">
+                <h3>
+                    <span class="feature-icon">🎯</span>
+                    Process Guidance
+                </h3>
+                <p>Step-by-step guidance through complex system lifecycle processes and best practices</p>
+            </div>
+        </aside>
+    </main>
+
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+                window.voiceflow.chat.load({
+                    verify: { projectID: '65fc9e3ec80f6a28836c9d22' },
+                    url: 'https://general-runtime.voiceflow.com',
+                    versionID: 'production',
+                    render: {
+                        mode: 'embedded',
+                        target: document.getElementById('voiceflow-chat')
+                    },
+                    assistant: {
+                        title: "ISO 15288 Assistant",
+                        description: "Your expert guide to system lifecycle processes",
+                        stylesheet: "data:text/css;base64,LnZmcmMtY2hhdC1jb250YWluZXIgeyBib3JkZXItcmFkaXVzOiAwICFpbXBvcnRhbnQ7IH0gLnZmcmMtc3lzdGVtLXJlc3BvbnNlIC52ZnJjLW1lc3NhZ2UgeyBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1hY2NlbnQtY29sb3IpOyBjb2xvcjogd2hpdGU7IGJvcmRlci1yYWRpdXM6IDEycHg7IH0gLnZmcmMtdXNlci1yZXNwb25zZSAudmZyYy1tZXNzYWdlIHsgYmFja2dyb3VuZC1jb2xvcjogI2YxZjVmOTsgY29sb3I6ICMwZjE3MmE7IGJvcmRlci1yYWRpdXM6IDEycHg7IH0="
+                    }
+                }).then(() => {
+                    // Add a welcome message
+                    window.voiceflow.chat.proactive.clear();
+                    window.voiceflow.chat.proactive.push({ 
+                        type: 'text', 
+                        payload: { message: '👋 Hello! I\'m your ISO 15288 expert. How can I help you today?' }
+                    });
+                });
+            }
+            v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+            v.type = "text/javascript";
+            s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+    </script>
+</body>
+</html>
