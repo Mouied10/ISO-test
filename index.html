@@ -92,11 +92,52 @@
             scroll-margin-top: 100px;
         }
 
+        .chat-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .chat-placeholder h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chat-placeholder p {
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .try-assistant-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .try-assistant-btn:hover {
+            transform: translateY(-2px);
+            background: var(--primary-color);
+        }
+
         #voiceflow-chat {
             width: 100%;
             height: 100%;
             border: none;
             scroll-behavior: auto;
+            display: none;
         }
 
         /* Custom Voiceflow Chat Styles */
@@ -197,18 +238,20 @@
             .chat-container {
                 height: 70vh;
                 min-height: 350px;
-                order: 1;
+                order: 2;
+                margin-top: 0.75rem;
             }
 
             .sample-questions {
-                order: 2;
-                margin-top: 1rem;
+                order: 1;
+                margin-top: 0;
                 margin-bottom: 0;
             }
 
             .features-sidebar {
                 grid-template-columns: 1fr;
                 order: 3;
+                margin-top: 0.75rem;
             }
 
             .feature-item {
@@ -413,6 +456,11 @@
                 </div>
             </div>
             <div class="chat-container">
+                <div class="chat-placeholder" id="chatPlaceholder">
+                    <h2>Ready to Learn About ISO 15288?</h2>
+                    <p>Click below to start chatting with our AI assistant</p>
+                    <button class="try-assistant-btn" onclick="loadAssistant()">Try Our Assistant</button>
+                </div>
                 <div id="voiceflow-chat"></div>
             </div>
         </div>
@@ -532,6 +580,43 @@
             setTimeout(() => {
                 clearInterval(interval);
             }, duration);
+        }
+
+        function loadAssistant() {
+            // Hide placeholder and show chat
+            document.getElementById('chatPlaceholder').style.display = 'none';
+            document.getElementById('voiceflow-chat').style.display = 'block';
+            
+            // Load Voiceflow chat
+            (function(d, t) {
+                var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                v.onload = function() {
+                    window.voiceflow.chat.load({
+                        verify: { projectID: '65fc9e3ec80f6a28836c9d22' },
+                        url: 'https://general-runtime.voiceflow.com',
+                        versionID: 'production',
+                        render: {
+                            mode: 'embedded',
+                            target: document.getElementById('voiceflow-chat')
+                        },
+                        assistant: {
+                            title: "ISO 15288 Assistant",
+                            description: "Your expert guide to system lifecycle processes",
+                            stylesheet: "data:text/css;base64,LnZmcmMtY2hhdC1jb250YWluZXIgeyBib3JkZXItcmFkaXVzOiAwICFpbXBvcnRhbnQ7IH0gLnZmcmMtc3lzdGVtLXJlc3BvbnNlIC52ZnJjLW1lc3NhZ2UgeyBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1hY2NlbnQtY29sb3IpOyBjb2xvcjogd2hpdGU7IGJvcmRlci1yYWRpdXM6IDEycHg7IH0gLnZmcmMtdXNlci1yZXNwb25zZSAudmZyYy1tZXNzYWdlIHsgYmFja2dyb3VuZC1jb2xvcjogI2YxZjVmOTsgY29sb3I6ICMwZjE3MmE7IGJvcmRlci1yYWRpdXM6IDEycHg7IH0="
+                        }
+                    }).then(() => {
+                        // Add a welcome message
+                        window.voiceflow.chat.proactive.clear();
+                        window.voiceflow.chat.proactive.push({ 
+                            type: 'text', 
+                            payload: { message: '👋 Hello! I\'m your ISO 15288 expert. How can I help you today?' }
+                        });
+                    });
+                }
+                v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+                v.type = "text/javascript";
+                s.parentNode.insertBefore(v, s);
+            })(document, 'script');
         }
     </script>
 </body>
